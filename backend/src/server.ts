@@ -1,7 +1,7 @@
 import express from "express";
-import cors from "cors";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
+import cors from "cors";
 
 dotenv.config();
 
@@ -14,24 +14,44 @@ app.get("/", (req, res) => {
   res.send("NeuroStay Backend Running");
 });
 
-app.get("/api/test", (req, res) => {
-  res.json({
-    success: true,
-    message: "NeuroStay API Working",
-  });
-});
+app.post("/api/hotels/search", (req, res) => {
+  const { query } = req.body;
 
-const PORT = process.env.PORT || 5000;
+  res.json([
+    {
+      id: 1,
+      name: "Hotel Paradise",
+      city: query,
+      price: "₹1200",
+      rating: 4.5,
+      matchScore: 95,
+      why: "Budget friendly hotel with WiFi and AC"
+    },
+    {
+      id: 2,
+      name: "NeuroStay Inn",
+      city: query,
+      price: "₹1500",
+      rating: 4.2,
+      matchScore: 90,
+      why: "Good location and affordable"
+    }
+  ]);
+});
 
 mongoose
   .connect(process.env.MONGO_URI as string)
   .then(() => {
     console.log("MongoDB connected");
 
-    app.listen(PORT, () => {
-      console.log(`Server running on port ${PORT}`);
+    app.listen(process.env.PORT || 8080, () => {
+      console.log(
+        `Server running on port ${
+          process.env.PORT || 8080
+        }`
+      );
     });
   })
-  .catch((error) => {
-    console.log("MongoDB connection failed:", error);
+  .catch((err) => {
+    console.log(err);
   });

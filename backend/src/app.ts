@@ -1,13 +1,27 @@
-import express from "express";
-import cors from "cors";
+const API_URL = import.meta.env.VITE_API_URL;
 
-const app = express();
+export const api = {
+  getBackendStatus: async () => {
+    const response = await fetch(`${API_URL}/`);
+    return response.text();
+  },
 
-app.use(cors());
-app.use(express.json());
+  testApi: async () => {
+    const response = await fetch(`${API_URL}/api/test`);
+    return response.json();
+  },
 
-app.get("/", (req, res) => {
-  res.send("NeuroStay Backend Running");
-});
+  searchHotels: async (query: string) => {
+    const response = await fetch(`${API_URL}/api/hotels/search`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ query }),
+    });
 
-export default app;
+    return response.json();
+  },
+};
+
+export default api;
