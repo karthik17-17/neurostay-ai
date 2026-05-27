@@ -1,5 +1,25 @@
-import app from "./app";
+import express from "express";
+import cors from "cors";
 import mongoose from "mongoose";
+import dotenv from "dotenv";
+
+dotenv.config();
+
+const app = express();
+
+app.use(cors());
+app.use(express.json());
+
+app.get("/", (req, res) => {
+  res.send("NeuroStay Backend Running");
+});
+
+app.get("/api/test", (req, res) => {
+  res.json({
+    success: true,
+    message: "NeuroStay API Working",
+  });
+});
 
 const PORT = process.env.PORT || 5000;
 
@@ -13,5 +33,5 @@ mongoose
     });
   })
   .catch((error) => {
-    console.error("MongoDB connection failed:", error);
+    console.log("MongoDB connection failed:", error);
   });
