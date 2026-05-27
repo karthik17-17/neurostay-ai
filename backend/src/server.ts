@@ -1,12 +1,11 @@
 import express from "express";
-import mongoose from "mongoose";
-import dotenv from "dotenv";
 import cors from "cors";
+import dotenv from "dotenv";
+import mongoose from "mongoose";
 
 dotenv.config();
 
 const app = express();
-
 app.use(cors());
 app.use(express.json());
 
@@ -21,37 +20,31 @@ app.post("/api/hotels/search", (req, res) => {
     {
       id: 1,
       name: "Hotel Paradise",
-      city: query,
+      city: query || "India",
       price: "₹1200",
       rating: 4.5,
       matchScore: 95,
-      why: "Budget friendly hotel with WiFi and AC"
+      why: "Budget friendly hotel with WiFi and AC",
     },
     {
       id: 2,
       name: "NeuroStay Inn",
-      city: query,
+      city: query || "India",
       price: "₹1500",
       rating: 4.2,
       matchScore: 90,
-      why: "Good location and affordable"
-    }
+      why: "Good location and affordable",
+    },
   ]);
 });
 
-mongoose
-  .connect(process.env.MONGO_URI as string)
-  .then(() => {
-    console.log("MongoDB connected");
+const PORT = process.env.PORT || 8080;
 
-    app.listen(process.env.PORT || 8080, () => {
-      console.log(
-        `Server running on port ${
-          process.env.PORT || 8080
-        }`
-      );
-    });
-  })
-  .catch((err) => {
-    console.log(err);
-  });
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
+
+mongoose
+  .connect(process.env.MONGO_URI || "")
+  .then(() => console.log("MongoDB connected"))
+  .catch((err) => console.log("MongoDB connection failed:", err.message));
