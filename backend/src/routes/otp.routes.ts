@@ -20,21 +20,20 @@ router.post("/send-otp", async (req, res) => {
     await transporter.sendMail({
       from: process.env.EMAIL_USER,
       to: email,
-      subject: "NeuroStay AI OTP Verification",
+      subject: "NeuroStay AI OTP",
       text: `Your OTP is ${otp}`,
     });
 
     res.json({
       success: true,
-      message: "OTP sent successfully",
-      otp,
+      message: "OTP sent",
     });
   } catch (error) {
     console.log(error);
 
     res.status(500).json({
       success: false,
-      message: "Failed to send OTP",
+      message: "OTP failed",
     });
   }
 });
